@@ -80,6 +80,9 @@ COLOR = clock_options.get('color', [255, 255, 255])
 
 filters = [('multiply', COLOR)]
 
+def mirror(seq):
+    output = list(seq[::-1])
+    return output
 
 def draw_time():
     global TWELVE_HR_FORMAT, OMIT_LEADING_ZERO
@@ -100,14 +103,14 @@ def draw_time():
     # Draw hour digits
     hour_x_offset = 0
     if not (OMIT_LEADING_ZERO and int(hour_str[0]) == 0):
-        draw_frame(cache['digits'][int(hour_str[0])],
-                   0 + hour_x_offset, 0, filters)
-    draw_frame(cache['digits'][int(hour_str[1])],
-               4 + hour_x_offset, 0, filters)
+        draw_frame(mirror(cache['digits'][int(hour_str[0])]),
+                    0 + hour_x_offset, 12, filters)
+    draw_frame(mirror(cache['digits'][int(hour_str[1])]),
+               4 + hour_x_offset, 12, filters)
 
-    # Draw minute digits
-    draw_frame(cache['digits'][int(minute_str[0])], 0, 6, filters)
-    draw_frame(cache['digits'][int(minute_str[1])], 4, 6, filters)
+    # # Draw minute digits
+    draw_frame(mirror(cache['digits'][int(minute_str[0])]), 0, 6, filters)
+    draw_frame(mirror(cache['digits'][int(minute_str[1])]), 4, 6, filters)
 
 
 def draw_weather():
@@ -126,7 +129,7 @@ def draw_weather():
     ticks = int(time.time() * frame_rate.get(sprite_name, 1))
     frame_index = ticks % len(weather_sprite)
 
-    draw_frame(weather_sprite[frame_index], 0, 10)
+    draw_frame(mirror(weather_sprite[frame_index]), 0, -2)
 
 
 def draw_blinker():
