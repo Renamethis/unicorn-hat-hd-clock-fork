@@ -3,14 +3,15 @@ import time
 from sunrise import get_brightness_level
 from options import led_options
 
-try:
-    import unicornhathd as hat
-    print('Unicorn HAT HD module found.')
-except ImportError:
-    from unicorn_hat_sim import unicornhathd as hat
-    print('Unicorn HAT HD simulator module found.')
+# try:
+from unicornhatmini import UnicornHATMini
+#     print('Unicorn HAT HD module found.')
+# except ImportError:
+#     # from unicorn_hat_sim import unicornhathd as hat
+#     print('Unicorn HAT HD simulator module found.')
 
-width, height = hat.get_shape()
+hat = UnicornHATMini(spi_max_speed_hz=6000)
+height, width = hat.get_shape()
 
 buffer = []
 old_buffer = []
@@ -81,8 +82,9 @@ def show():
     global old_buffer
     for y in range(height):
         for x in range(width):
-            px = [(int((buffer[y][x][i] + old_buffer[y][x][i])) / 2)
+            px = [int(((buffer[y][x][i] + old_buffer[y][x][i])) / 2)
                   for i in range(3)]
+            
             hat.set_pixel(*map_coords(x, y), *px)
 
     hat.show()
@@ -98,7 +100,7 @@ def set_brightness(level):
     min_val, max_val = led_options.get(
         'minBrightness', 0.01), led_options.get('maxBrightness', 1.0)
     brightness = min_val + ((max_val - min_val) * level)
-    hat.brightness(brightness)
+    hat.set_brightness(brightness)
 
 
 time_behind = 0
@@ -138,5 +140,5 @@ def loop_draw(draw_func):
         off()
 
 
-hat.rotation(led_options.get('rotation', 0))
+hat.set_rotation(led_options.get('rotation', 0))
 setup()
