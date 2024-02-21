@@ -101,13 +101,13 @@ def draw_time():
     hour_x_offset = 0
     if not (OMIT_LEADING_ZERO and int(hour_str[0]) == 0):
         draw_frame(cache['digits'][int(hour_str[0])],
-                   9 + hour_x_offset, 5, filters)
+                   0 + hour_x_offset, 0, filters)
     draw_frame(cache['digits'][int(hour_str[1])],
-               13 + hour_x_offset, 5, filters)
+               4 + hour_x_offset, 0, filters)
 
     # Draw minute digits
-    draw_frame(cache['digits'][int(minute_str[0])], 9, 11, filters)
-    draw_frame(cache['digits'][int(minute_str[1])], 13, 11, filters)
+    draw_frame(cache['digits'][int(minute_str[0])], 0, 6, filters)
+    draw_frame(cache['digits'][int(minute_str[1])], 4, 6, filters)
 
 
 def draw_weather():
@@ -126,7 +126,7 @@ def draw_weather():
     ticks = int(time.time() * frame_rate.get(sprite_name, 1))
     frame_index = ticks % len(weather_sprite)
 
-    draw_frame(weather_sprite[frame_index], 0, 0)
+    draw_frame(weather_sprite[frame_index], 0, 10)
 
 
 def draw_blinker():
@@ -137,13 +137,13 @@ def draw_blinker():
             color = [128, 128, 128]
         else:
             color = [255, 0, 0] # red
-    set_px(0, 15, color, filters)
+    # set_px(0, 15, color, filters)
 
 
 def draw():
     draw_time()
     draw_weather()
-    draw_blinker()
+    # draw_blinker()
 
 
 if __name__ == '__main__':
